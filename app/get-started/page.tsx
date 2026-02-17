@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { Shield, ArrowLeft, Loader2, CheckCircle2, XCircle, LogIn, FileSpreadsheet } from "lucide-react";
+import { ArrowLeft, Loader2, CheckCircle2, XCircle, FileSpreadsheet, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
 import { checkBackendHealth, apiBaseUrl } from "@/lib/api";
@@ -49,7 +49,7 @@ export default function GetStartedPage() {
         <nav className="relative z-50 border-b border-zinc-700/30 px-6 py-6">
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5 text-amber-500" />
+              <Diamond className="h-5 w-5 text-amber-500" />
               <span className="font-medium">Stone Age</span>
             </Link>
             <Link href="/">

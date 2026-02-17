@@ -241,7 +241,7 @@ export default function ExtractPage() {
                             Download Excel
                           </Button>
                         )}
-                        {excelPath && accessToken && (
+                        {/* {excelPath && accessToken && (
                           <Button
                             type="button"
                             size="sm"
@@ -294,7 +294,7 @@ export default function ExtractPage() {
                             <Mail className="h-3.5 w-3.5" />
                             {resultEmailSent ? "Sent to your email" : emailNote === "no_excel_path" ? "Report not emailed" : `Email: ${emailNote}`}
                           </span>
-                        )}
+                        )} */}
                       </div>
                     </>
                   );
