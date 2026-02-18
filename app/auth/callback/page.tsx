@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { Shield, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ErrorServerMessage } from "@/components/error-server-message";
 import { setSession } from "@/lib/auth";
 import { getSupabaseBrowser } from "@/lib/supabase";
 
@@ -91,7 +92,10 @@ export default function AuthCallbackPage() {
             <Shield className="h-5 w-5 text-amber-500" />
             <span className="font-medium">Stone Age</span>
           </Link>
-          <p className="text-red-400 mb-4">{error}</p>
+          <p className="text-red-400 mb-2">{error}</p>
+          <div className="mb-4">
+            <ErrorServerMessage />
+          </div>
           <p className="text-zinc-500 text-sm mb-6 max-w-sm">
             Add <span className="font-mono text-zinc-400">NEXT_PUBLIC_SUPABASE_URL</span> and <span className="font-mono text-zinc-400">NEXT_PUBLIC_SUPABASE_ANON_KEY</span> to <span className="font-mono text-zinc-400">.env</span> (from Supabase project Settings → API). Ensure <span className="font-mono text-zinc-400">http://localhost:3000/api/auth/callback</span> is in Supabase Redirect URLs.
           </p>

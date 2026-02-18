@@ -64,14 +64,17 @@ export async function apiProxyPost<T = unknown>(
   }
 }
 
-/** Check backend health via our /api/health proxy (hits backend /health). */
-export async function checkBackendHealth(): Promise<{
+export type HealthResult = {
   ok: boolean;
   reachable?: boolean;
   status?: number;
   data?: unknown;
   error?: string;
-}> {
+  timedOut?: boolean;
+};
+
+/** Check backend health via our /api/health proxy (hits backend /health). */
+export async function checkBackendHealth(): Promise<HealthResult> {
   try {
     const res = await fetch("/api/health", {
       method: "GET",
@@ -89,4 +92,31 @@ export async function checkBackendHealth(): Promise<{
     const message = e instanceof Error ? e.message : String(e);
     return { ok: false, reachable: false, error: message };
   }
+}
+
+const BACKEND_UNREACHABLE_KEY = "stoneage_backend_unreachable";
+const UNREACHABLE_TTL_MS = 10 * 60 * 1000; // 10 min
+
+export function markBackendUnreachable(): void {
+  if (typeof sessionStorage !== "undefined") {
+    sessionStorage.setItem(BACKEND_UNREACHABLE_KEY, String(Date.now()));
+  }
+}
+
+export function clearBackendUnreachable(): void {
+  if (typeof sessionStorage !== "undefined") {
+    sessionStorage.removeItem(BACKEND_UNREACHABLE_KEY);
+  }
+}
+
+export function isBackendKnownUnreachable(): boolean {
+  if (typeof sessionStorage === "undefined") return false;
+  const raw = sessionStorage.getItem(BACKEND_UNREACHABLE_KEY);
+  if (!raw) return false;
+  const t = Number(raw);
+  if (Number.isNaN(t) || Date.now() - t > UNREACHABLE_TTL_MS) {
+    sessionStorage.removeItem(BACKEND_UNREACHABLE_KEY);
+    return false;
+  }
+  return true;
 }

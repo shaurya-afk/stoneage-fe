@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Shield, ArrowLeft } from "lucide-react";
+import { Shield, ArrowLeft, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
+import { ErrorServerMessage } from "@/components/error-server-message";
 import { apiProxyPost, apiProxyGet } from "@/lib/api";
 import { setSession } from "@/lib/auth";
 import { getSupabaseBrowser } from "@/lib/supabase";
@@ -89,7 +90,7 @@ export default function SignUpPage() {
         <nav className="relative z-50 border-b border-zinc-700/30 px-6 py-6">
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5 text-amber-500" />
+              <Diamond className="h-5 w-5 text-amber-500" />
               <span className="font-medium">Stone Age</span>
             </Link>
             <Link href="/get-started">
@@ -112,7 +113,7 @@ export default function SignUpPage() {
 
             {success ? (
               <div className="mt-8 p-4 border border-amber-500/30 bg-amber-500/10 text-white">
-                Account created. You can now sign in.
+                Account created. Confirm your email to sign in.
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -139,7 +140,12 @@ export default function SignUpPage() {
                     className="w-full rounded border border-zinc-600 bg-zinc-800 px-4 py-2 text-white placeholder-zinc-500 focus:border-amber-500 focus:outline-none focus:ring-1 focus:ring-amber-500"
                   />
                 </div>
-                {error && <p className="text-sm text-red-400">{error}</p>}
+                {error && (
+                  <div>
+                    <p className="text-sm text-red-400">{error}</p>
+                    <ErrorServerMessage />
+                  </div>
+                )}
                 <Button type="submit" size="lg" disabled={loading} className="w-full bg-white text-slate-900 hover:bg-white/90">
                   {loading ? "Creating account…" : "Sign up"}
                 </Button>

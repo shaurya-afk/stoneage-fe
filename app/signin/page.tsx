@@ -2,9 +2,10 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Shield, ArrowLeft } from "lucide-react";
+import { Shield, ArrowLeft, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
+import { ErrorServerMessage } from "@/components/error-server-message";
 import { apiProxyPost, apiProxyGet } from "@/lib/api";
 import { setSession } from "@/lib/auth";
 import { getSupabaseBrowser } from "@/lib/supabase";
@@ -89,7 +90,7 @@ export default function SignInPage() {
         <nav className="relative z-50 border-b border-zinc-700/30 px-6 py-6">
           <div className="mx-auto flex max-w-7xl items-center justify-between">
             <Link href="/" className="flex items-center gap-2 text-white">
-              <Shield className="h-5 w-5 text-amber-500" />
+              <Diamond className="h-5 w-5 text-amber-500" />
               <span className="font-medium">Stone Age</span>
             </Link>
             <Link href="/get-started">
@@ -112,7 +113,7 @@ export default function SignInPage() {
 
             {success ? (
               <div className="mt-8 p-4 border border-amber-500/30 bg-amber-500/10 text-white">
-                You are signed in. You can now use Extract data with your account.
+                You are signed in. You can now use Stone Age with your account.
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-4">
@@ -144,7 +145,10 @@ export default function SignInPage() {
                   />
                 </div>
                 {error && (
-                  <p className="text-sm text-red-400">{error}</p>
+                  <div>
+                    <p className="text-sm text-red-400">{error}</p>
+                    <ErrorServerMessage />
+                  </div>
                 )}
                 <Button
                   type="submit"
