@@ -1,49 +1,33 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, Loader2, CheckCircle2, XCircle, FileSpreadsheet, Diamond } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
-import { checkBackendHealth, apiBaseUrl, markBackendUnreachable, clearBackendUnreachable, type HealthResult } from "@/lib/api";
+import { checkBackendHealth, apiBaseUrl } from "@/lib/api";
 import { cn } from "@/lib/utils";
 
-const HEALTH_SHOW_HEALTHY_MS = 2000;
-
 export default function GetStartedPage() {
-  const [status, setStatus] = useState<HealthResult | null>(null);
+  const [status, setStatus] = useState<{
+    ok: boolean;
+    reachable?: boolean;
+    status?: number;
+    data?: unknown;
+    error?: string;
+  } | null>(null);
   const [loading, setLoading] = useState(true);
-
-  const resultReceivedRef = useRef(false);
 
   useEffect(() => {
     let cancelled = false;
-    let showHealthyTimer: ReturnType<typeof setTimeout> | null = null;
-
-    const promise = checkBackendHealth();
-
-    showHealthyTimer = setTimeout(() => {
-      if (cancelled || resultReceivedRef.current) return;
-      setLoading(false);
-      setStatus({ ok: true, reachable: true });
-    }, HEALTH_SHOW_HEALTHY_MS);
-
-    promise.then((result) => {
-      resultReceivedRef.current = true;
-      if (cancelled) return;
-      if (showHealthyTimer != null) clearTimeout(showHealthyTimer);
-      setStatus(result);
-      setLoading(false);
-      if (result.reachable === false) {
-        markBackendUnreachable();
-      } else {
-        clearBackendUnreachable();
+    checkBackendHealth().then((result) => {
+      if (!cancelled) {
+        setStatus(result);
+        setLoading(false);
       }
     });
-
     return () => {
       cancelled = true;
-      if (showHealthyTimer != null) clearTimeout(showHealthyTimer);
     };
   }, []);
 

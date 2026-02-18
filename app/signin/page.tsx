@@ -112,9 +112,11 @@ export default function SignInPage() {
             <p className="mt-2 text-zinc-400">Use your Stone Age account.</p>
 
             {success ? (
-              <div className="mt-8 p-4 border border-amber-500/30 bg-amber-500/10 text-white">
-                You are signed in. You can now use Stone Age with your account.
-              </div>
+              <Link href="/extract">
+                <div className="mt-8 p-4 border border-amber-500/30 bg-amber-500/10 text-white">
+                  You are signed in. Click to use Stone Age with your account.
+                </div>
+              </Link>
             ) : (
               <form onSubmit={handleSubmit} className="mt-8 space-y-4">
                 <div>

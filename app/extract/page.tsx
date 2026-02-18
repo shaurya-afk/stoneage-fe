@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Footer } from "@/components/footer";
 import { getAccessTokenAsync } from "@/lib/auth";
 import { cn } from "@/lib/utils";
-import { checkBackendHealth, isBackendKnownUnreachable, markBackendUnreachable, clearBackendUnreachable } from "@/lib/api";
 import { ErrorServerMessage } from "@/components/error-server-message";
 
 export default function ExtractPage() {
@@ -22,26 +21,12 @@ export default function ExtractPage() {
   const [emailSending, setEmailSending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
-  const [serverDownBanner, setServerDownBanner] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     getAccessTokenAsync().then((token) => {
       setAccessToken(token);
       setAuthChecked(true);
-    });
-  }, []);
-
-  useEffect(() => {
-    setServerDownBanner(isBackendKnownUnreachable());
-    checkBackendHealth().then((res) => {
-      if (res.reachable === false) {
-        markBackendUnreachable();
-        setServerDownBanner(true);
-      } else {
-        clearBackendUnreachable();
-        setServerDownBanner(false);
-      }
     });
   }, []);
 
@@ -86,8 +71,6 @@ export default function ExtractPage() {
       setEmailSent(false);
     } catch (err: unknown) {
       setError(err instanceof Error ? err.message : "Extraction failed");
-      markBackendUnreachable();
-      setServerDownBanner(true);
     } finally {
       setLoading(false);
     }
@@ -133,12 +116,6 @@ export default function ExtractPage() {
             <p className="mt-2 text-zinc-400">
               Upload a PDF to extract structured data (e.g. invoice fields). You must be signed in.
             </p>
-
-            {serverDownBanner && (
-              <p className="mt-4 text-sm text-zinc-500 border border-zinc-700/50 bg-zinc-800/30 px-4 py-2 rounded">
-                Server may be down—it&apos;s on us. Try again later.
-              </p>
-            )}
 
             {authChecked && !isAuthenticated ? (
               <div className="mt-8 p-6 rounded border border-amber-500/30 bg-amber-500/10">
