@@ -43,7 +43,7 @@ export const metadata: Metadata = {
       "Extract data from PDFs automatically. PDF to Excel conversion, invoice extraction, and structured data extraction with AI.",
     images: [
       {
-        url: "/hero-bg.jpg",
+        url: "/og-image.png",
         width: 1200,
         height: 630,
         alt: "Stone Age – From PDFs to Production Data",
@@ -54,6 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Stone Age | PDF to Excel – Extract Data from PDFs with AI",
     description: "Extract data from PDFs automatically. PDF to Excel, invoice extraction, structured data with AI.",
+    images: ["/og-image.png"],
   },
   robots: {
     index: true,
