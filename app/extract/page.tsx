@@ -114,7 +114,7 @@ export default function ExtractPage() {
               Extract data
             </h1>
             <p className="mt-2 text-zinc-400">
-              Upload a PDF to extract structured data (e.g. invoice fields). You must be signed in.
+              Upload a PDF to extract structured data.
             </p>
 
             {authChecked && !isAuthenticated ? (
@@ -187,6 +187,9 @@ export default function ExtractPage() {
               >
                 {loading ? "Extracting…" : "Extract"}
               </Button>
+              <p className="text-sm text-zinc-500 text-center mt-2">
+                This process may take a few minutes.
+              </p>
             </form>
 
             {result && typeof result === "object" && (
